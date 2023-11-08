@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { userAuthReducer } from './UserAuth/UserAuthSlice'
+import { userAuthReducer } from './Auth/AuthSlice'
 import { TAppDispatch, TRootState } from './store.types'
 
 const reducer = combineReducers({

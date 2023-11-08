@@ -1,5 +1,5 @@
 import { RouteObject, createHashRouter } from 'react-router-dom'
-import { HomeScreen } from '../../presentation/screens/Home/HomeScreen'
+import { makeHomeScreenFactory } from '../factories/screens/Home/HomeScreenFactory'
 import { makeLoginScreenFactory } from '../factories/screens/Login/LoginScreenFactory'
 
 const applicationRoutes: RouteObject[] = [
@@ -9,7 +9,7 @@ const applicationRoutes: RouteObject[] = [
   },
   {
     path: '/home',
-    element: <HomeScreen />,
+    element: makeHomeScreenFactory(),
   },
 ]
 

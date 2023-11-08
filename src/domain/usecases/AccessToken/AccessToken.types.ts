@@ -10,6 +10,6 @@ export namespace AccessTokenNamespace {
   }
 
   export interface IResponse {
-    accessToken: string
+    access_token: string
   }
 }

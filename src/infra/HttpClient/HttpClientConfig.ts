@@ -2,6 +2,8 @@ import { Buffer } from 'buffer'
 import { EAuthScopes } from '../../domain/usecases/UserAuth/UserAuth.types'
 
 export class HttpClientConfig {
+  ACCESS_TOKEN = localStorage.getItem('access_token')
+  API_BASE_URL = String(process.env.REACT_APP_SPOTIFY_API_BASE_URL)
   AUTH_URL = new URL('https://accounts.spotify.com/authorize')
   CHALLENGE_METHOD = 'S256'
   CLIENT_ID = String(process.env.REACT_APP_CLIENT_ID)
@@ -25,4 +27,8 @@ export class HttpClientConfig {
     EAuthScopes.playlistModifyPrivate,
     EAuthScopes.playlistModifyPublic,
   ]
+
+  headers = {
+    Authorization: `Bearer ${this.ACCESS_TOKEN}`,
+  }
 }

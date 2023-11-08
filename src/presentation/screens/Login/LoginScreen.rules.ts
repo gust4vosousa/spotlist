@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { selectUserAuthData } from '../../../application/store/UserAuth/UserAuthSelectors'
-import { setAccessToken } from '../../../application/store/UserAuth/UserAuthSlice'
+import { selectAuthData } from '../../../application/store/Auth/AuthSelectors'
+import { setAccessToken } from '../../../application/store/Auth/AuthSlice'
 import {
   useAppDispatch,
   useAppSelector,
@@ -27,7 +27,7 @@ export const useLoginScreenRules = ({
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const selectUserAuth = useAppSelector(selectUserAuthData)
+  const selectUserAuth = useAppSelector(selectAuthData)
 
   const { authCode } = useAuthCodeHook()
 
@@ -35,17 +35,17 @@ export const useLoginScreenRules = ({
     if (authCode) {
       getAccessToken({ authCode })
     }
-  }, [])
+  }, [authCode])
 
   useEffect(() => {
     if (!!accessToken) {
       dispatch(setAccessToken(accessToken))
-      // navigate('/home')
+      navigate('/home')
     }
-  }, [])
+  }, [accessToken])
 
   return {
-    accessToken: selectUserAuth?.accessToken,
+    accessToken: selectUserAuth?.access_token,
     authCode,
     getUserAuth,
   }

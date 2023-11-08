@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { ERequestStatus } from '../../../domain/application/RequestStatus/RequestStatus.types'
 import { AccessTokenNamespace } from '../../../domain/usecases/AccessToken/AccessToken.types'
-import { IUserAuthState } from './UserAuthSlice.types'
+import { IAuthState } from './AuthSlice.types'
 
-const initialState: IUserAuthState = { status: ERequestStatus.idle }
+const initialState: IAuthState = { status: ERequestStatus.idle }
 
 const userAuthSlice = createSlice({
   name: 'auth',
