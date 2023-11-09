@@ -1,4 +1,4 @@
 import { UserAuth } from '../../../../data/usecases/UserAuth/UserAuth'
-import { makeHttpCLientFactory } from '../../infra/HttpClient/HttpClientFactory'
+import { makeHttpClientFactory } from '../../infra/HttpClient/HttpClientFactory'
 
-export const makeUserAuthFactory = () => new UserAuth(makeHttpCLientFactory())
+export const makeUserAuthFactory = () => new UserAuth(makeHttpClientFactory())

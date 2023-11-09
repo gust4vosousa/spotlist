@@ -1,4 +1,4 @@
-import { IArtist } from '../../entities/ArtistEntity.types'
+import { IArtist } from '../../../entities/Artist/ArtistEntity.types'
 
 export interface IArtistSearch {
   handle: (

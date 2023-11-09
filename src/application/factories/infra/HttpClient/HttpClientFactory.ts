@@ -1,3 +1,3 @@
 import { HttpClientConfig } from '../../../../infra/HttpClient/HttpClientConfig'
 
-export const makeHttpCLientFactory = () => new HttpClientConfig()
+export const makeHttpClientFactory = () => new HttpClientConfig()

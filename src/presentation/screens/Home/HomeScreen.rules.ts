@@ -1,46 +1,68 @@
 import { useCallback, useEffect, useState } from 'react'
-import { IArtist } from '../../../domain/entities/ArtistEntity.types'
+import { IArtist } from '../../../domain/entities'
 import { useHandleRequest } from '../../hooks/HandleRequest/UseHandleRequest'
 import { useStateDebounce } from '../../hooks/StateDebounce/UseStateDebounce'
 import { IHomeScreenProps } from './HomeScreen.types'
 
 export const useHomeScreenRules = ({
   artistSearchService,
+  artistTopTracksService,
+  userService,
 }: IHomeScreenProps) => {
-  const { data: artistSearchData, handle: handleArtistSearch } =
-    useHandleRequest(artistSearchService.handle, null)
+  const {
+    data: artistSearchData,
+    handle: handleArtistSearch,
+    isFailure: isArtistSearchFailure,
+  } = useHandleRequest(artistSearchService.handle, null)
 
-  const [currentArtist, setCurrentArtist] = useState<IArtist | null>(null)
-  const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([])
+  const { data: artistTopTracks, handle: handleArtistTopTracks } =
+    useHandleRequest(artistTopTracksService.handle, null)
+
+  const { data: user, handle: handleUser } = useHandleRequest(
+    userService.handle,
+    null,
+  )
 
   const [inputValue, setInputValue] = useStateDebounce<string>('')
+  const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([])
 
-  const artistList: IArtist[] = artistSearchData?.artists.items ?? []
+  const artistOptions: IArtist[] = artistSearchData?.artists.items ?? []
 
-  const handleOnChangeArtist = useCallback((artist: IArtist) => {
-    setCurrentArtist(artist)
-
-    if (selectedArtists.includes(artist)) {
-      setSelectedArtists(prev =>
-        prev.filter(selectedArtists => selectedArtists.id !== artist.id),
-      )
-      return
-    }
-
-    setSelectedArtists(prev => [...prev, artist])
+  const handleRemoveArtist = useCallback((artist: IArtist) => {
+    setSelectedArtists(prev =>
+      prev.filter(selectedArtists => selectedArtists.id !== artist.id),
+    )
   }, [])
+
+  const handleSelectArtist = useCallback(
+    (artist: IArtist) => {
+      const ids = selectedArtists.map(artist => artist.id)
+
+      if (ids.includes(artist.id)) {
+        return
+      }
+
+      setSelectedArtists(prev => [...prev, artist])
+    },
+    [selectedArtists],
+  )
+
+  useEffect(() => {
+    handleUser()
+  }, [handleUser])
 
   useEffect(() => {
     if (inputValue) {
       handleArtistSearch({ artistName: inputValue })
     }
-  }, [inputValue])
+  }, [handleArtistSearch, inputValue])
 
   return {
-    artistList,
-    currentArtist,
-    handleOnChangeArtist,
+    artistOptions,
+    handleRemoveArtist,
+    handleSelectArtist,
     selectedArtists,
     setInputValue,
+    user,
   }
 }

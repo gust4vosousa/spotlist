@@ -1,6 +1,14 @@
 import { HomeScreen } from '../../../../presentation/screens/Home/HomeScreen'
-import { makeArtistSearchFactory } from '../../usecases/ArtistSearch/ArtistSearchFactory'
+import {
+  makeArtistSearchFactory,
+  makeArtistTopTracksFactory,
+} from '../../usecases/Artist'
+import { makeUserFactory } from '../../usecases/User/UserFactory'
 
 export const makeHomeScreenFactory = () => (
-  <HomeScreen artistSearchService={makeArtistSearchFactory()} />
+  <HomeScreen
+    artistSearchService={makeArtistSearchFactory()}
+    artistTopTracksService={makeArtistTopTracksFactory()}
+    userService={makeUserFactory()}
+  />
 )

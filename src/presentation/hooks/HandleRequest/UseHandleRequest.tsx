@@ -14,25 +14,27 @@ export const useHandleRequest = <TOutput, TFilter = void>(
   const isBusy = state === ERequestStatus.busy
   const isFailure = state === ERequestStatus.error
 
-  const handle = useCallback(async (filter: TFilter) => {
-    setData(initialState)
-    setState(ERequestStatus.busy)
+  const handle = useCallback(
+    async (filter: TFilter) => {
+      setData(initialState)
+      setState(ERequestStatus.busy)
 
-    try {
-      const response = await service(filter)
+      try {
+        const response = await service(filter)
 
-      setState(ERequestStatus.success)
-      setData(response)
+        setState(ERequestStatus.success)
+        setData(response)
 
-      return response
-    } catch (error) {
-      console.log(error)
+        return response
+      } catch (error) {
+        console.log(error)
+        setState(ERequestStatus.error)
 
-      setState(ERequestStatus.error)
-
-      return initialState
-    }
-  }, [])
+        return initialState
+      }
+    },
+    [initialState, service],
+  )
 
   const resetState = () => {
     setData(initialState)

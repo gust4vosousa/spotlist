@@ -5,5 +5,4 @@ export interface IAutoCompleteProps<T> {
   onInputChange: (input: string) => void
   optionKey: keyof T
   options: T[]
-  value: T | null
 }

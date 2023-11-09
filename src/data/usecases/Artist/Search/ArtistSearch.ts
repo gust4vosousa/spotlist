@@ -1,9 +1,10 @@
 import axios from 'axios'
+
 import {
   ArtistSearchNamespace,
   IArtistSearch,
-} from '../../../domain/usecases/Artist/ArtistSearch.types'
-import { HttpClientConfig } from '../../../infra/HttpClient/HttpClientConfig'
+} from '../../../../domain/usecases/Artist'
+import { HttpClientConfig } from '../../../../infra/HttpClient/HttpClientConfig'
 
 export class ArtistSearch implements IArtistSearch {
   constructor(private readonly httpClient: HttpClientConfig) {}

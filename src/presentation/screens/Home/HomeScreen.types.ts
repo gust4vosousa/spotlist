@@ -1,9 +1,8 @@
-import { ArtistSearch } from '../../../data/usecases/Artist/ArtistSearch'
+import { ArtistSearch, ArtistTopTracks } from '../../../data/usecases/Artist'
+import { User } from '../../../data/usecases/Artist/User/User'
 
 export interface IHomeScreenProps {
   artistSearchService: ArtistSearch
-}
-
-export interface IArtistSearchForm {
-  artistName: string
+  artistTopTracksService: ArtistTopTracks
+  userService: User
 }

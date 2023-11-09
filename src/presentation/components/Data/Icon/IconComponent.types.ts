@@ -9,6 +9,7 @@ export enum EIcons {
   ARROW_FORWARD = 'arrow_forward_ios',
   COMPARE = 'compare',
   DARK_MODE = 'dark_mode',
+  DELETE = 'delete',
   EXPAND_MORE = 'expand_more',
   HOME = 'home',
   LIGHT_MODE = 'light_mode',

@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios'
 import { Buffer } from 'buffer'
 import { EAuthScopes } from '../../domain/usecases/UserAuth/UserAuth.types'
 
@@ -28,7 +29,7 @@ export class HttpClientConfig {
     EAuthScopes.playlistModifyPublic,
   ]
 
-  headers = {
+  headers: AxiosRequestConfig['headers'] = {
     Authorization: `Bearer ${this.ACCESS_TOKEN}`,
   }
 }
