@@ -6,20 +6,17 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../../application/store/store'
-import { useAuthCodeHook } from '../../hooks/AuthCode/UseAuthCodeHook'
-import { useHandleRequestHook } from '../../hooks/HandleRequest/UseHandleRequestHook'
+import { useAuthCode } from '../../hooks/AuthCode/UseAuthCode'
+import { useHandleRequest } from '../../hooks/HandleRequest/UseHandleRequest'
 import { ILoginScreenProps } from './LoginScreen.types'
 
 export const useLoginScreenRules = ({
   accessTokenService,
   userAuthService,
 }: ILoginScreenProps) => {
-  const { handle: getUserAuth } = useHandleRequestHook(
-    userAuthService.handle,
-    null,
-  )
+  const { handle: getUserAuth } = useHandleRequest(userAuthService.handle, null)
 
-  const { data: accessToken, handle: getAccessToken } = useHandleRequestHook(
+  const { data: accessToken, handle: getAccessToken } = useHandleRequest(
     accessTokenService.handle,
     null,
   )
@@ -29,7 +26,7 @@ export const useLoginScreenRules = ({
 
   const selectUserAuth = useAppSelector(selectAuthData)
 
-  const { authCode } = useAuthCodeHook()
+  const { authCode } = useAuthCode()
 
   useEffect(() => {
     if (authCode) {

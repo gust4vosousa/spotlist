@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { ERequestStatus } from '../../../domain/application/RequestStatus/RequestStatus.types'
 import { IUseHandleRequest } from './UseHandleRequest.types'
 
-export const useHandleRequestHook = <TOutput, TFilter = void>(
+export const useHandleRequest = <TOutput, TFilter = void>(
   service: TFilter extends void
     ? () => Promise<TOutput>
     : (filter: TFilter) => Promise<TOutput>,

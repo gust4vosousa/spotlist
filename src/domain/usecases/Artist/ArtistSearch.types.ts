@@ -12,6 +12,8 @@ export namespace ArtistSearchNamespace {
   }
 
   export interface IResponse {
-    artists: IArtist[]
+    artists: {
+      items: IArtist[]
+    }
   }
 }

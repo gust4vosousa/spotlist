@@ -1,25 +1,46 @@
-import * as Yup from 'yup'
-import { useHandleRequestHook } from '../../hooks/HandleRequest/UseHandleRequestHook'
-import { IArtistSearchForm, IHomeScreenProps } from './HomeScreen.types'
+import { useCallback, useEffect, useState } from 'react'
+import { IArtist } from '../../../domain/entities/ArtistEntity.types'
+import { useHandleRequest } from '../../hooks/HandleRequest/UseHandleRequest'
+import { useStateDebounce } from '../../hooks/StateDebounce/UseStateDebounce'
+import { IHomeScreenProps } from './HomeScreen.types'
 
 export const useHomeScreenRules = ({
   artistSearchService,
 }: IHomeScreenProps) => {
   const { data: artistSearchData, handle: handleArtistSearch } =
-    useHandleRequestHook(artistSearchService.handle, null)
+    useHandleRequest(artistSearchService.handle, null)
 
-  const initialValues: IArtistSearchForm = {
-    artistName: '',
-  }
+  const [currentArtist, setCurrentArtist] = useState<IArtist | null>(null)
+  const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([])
 
-  const validationSchema = Yup.object().shape({
-    artistName: Yup.string().required('Please, enter an artist name'),
-  })
+  const [inputValue, setInputValue] = useStateDebounce<string>('')
+
+  const artistList: IArtist[] = artistSearchData?.artists.items ?? []
+
+  const handleOnChangeArtist = useCallback((artist: IArtist) => {
+    setCurrentArtist(artist)
+
+    if (selectedArtists.includes(artist)) {
+      setSelectedArtists(prev =>
+        prev.filter(selectedArtists => selectedArtists.id !== artist.id),
+      )
+      return
+    }
+
+    setSelectedArtists(prev => [...prev, artist])
+  }, [])
+
+  useEffect(() => {
+    if (inputValue) {
+      handleArtistSearch({ artistName: inputValue })
+    }
+  }, [inputValue])
 
   return {
-    artistSearchData,
-    handleArtistSearch,
-    initialValues,
-    validationSchema,
+    artistList,
+    currentArtist,
+    handleOnChangeArtist,
+    selectedArtists,
+    setInputValue,
   }
 }
