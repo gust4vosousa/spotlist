@@ -1,0 +1,36 @@
+{
+  "components": {
+    "header": {
+      "color_mode": "Change color mode",
+      "logout": "Log out"
+    }
+  },
+  "generic": {
+    "artists": "Artists",
+    "create": "Create",
+    "export": "Export",
+    "playlist": "Playlist",
+    "reset": "Reset",
+    "similar_artists": "Include similar artists?",
+    "size": "Size",
+    "songs": "Songs"
+  },
+  "screens": {
+    "home": {
+      "clear_artists": "Clear artists",
+      "create_playlist": "Create playlist",
+      "selected_artists": "Selected artists",
+      "labels": {
+        "playlist_size": "Playlist size"
+      },
+      "placeholders": {
+        "artists": "What artists do you want to include?"
+      }
+    },
+    "login": {
+      "log_in": "Please, log in to continue",
+      "log_in_spotify": "Log in with Spotify",
+      "logging": "Logging in..."
+    }
+  }
+}

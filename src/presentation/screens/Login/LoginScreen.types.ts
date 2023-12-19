@@ -1,7 +1,6 @@
-import { AccessToken } from '../../../data/usecases/AccessToken/AccessToken'
-import { UserAuth } from '../../../data/usecases/UserAuth/UserAuth'
+import { AuthAccessToken, AuthCode } from '../../../data/usecases/Auth'
 
 export interface ILoginScreenProps {
-  accessTokenService: AccessToken
-  userAuthService: UserAuth
+  authAccessTokenService: AuthAccessToken
+  authCodeService: AuthCode
 }

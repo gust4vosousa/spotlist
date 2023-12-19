@@ -1,31 +1,36 @@
 import React from 'react'
 
-import { AppBar, IconButton, Toolbar } from '@mui/material'
-import { useColorModeContext } from '../../../../application/contexts/ColorMode/ColorModeContext'
-import { useDrawerContext } from '../../../../application/contexts/Drawer/DrawerContext'
+import {
+  AppBar,
+  Box,
+  IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import { IconComponent } from '../../Data/Icon/IconComponent'
-import { EIcons } from '../../Data/Icon/IconComponent.types'
+import { useHeaderComponentRules } from './HeaderComponent.rules'
 
 export const HeaderComponent: React.FC = () => {
-  const { currentColorMode, toggleColorMode } = useColorModeContext()
-  const { toggleDrawerOpen } = useDrawerContext()
+  const { actions } = useHeaderComponentRules()
 
   return (
     <AppBar position="static" enableColorOnDark>
-      <Toolbar style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        <IconButton onClick={toggleDrawerOpen}>
-          <IconComponent icon={EIcons.MENU} />
-        </IconButton>
+      <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typography fontSize={36}>SpotList</Typography>
 
-        {/* <Typography fontSize={48}>SpotList</Typography> */}
-
-        <IconButton onClick={toggleColorMode}>
-          <IconComponent
-            icon={
-              currentColorMode === 'dark' ? EIcons.DARK_MODE : EIcons.LIGHT_MODE
-            }
-          />
-        </IconButton>
+        <Box style={{ display: 'flex', gap: 16 }}>
+          {actions.map(
+            ({ icon, onClick, title, visible }) =>
+              visible && (
+                <Tooltip key={title} title={title}>
+                  <IconButton onClick={onClick}>
+                    <IconComponent icon={icon} />
+                  </IconButton>
+                </Tooltip>
+              ),
+          )}
+        </Box>
       </Toolbar>
     </AppBar>
   )

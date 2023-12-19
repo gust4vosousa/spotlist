@@ -1,41 +1,76 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { useUserContext } from '../../../application/contexts/User/UserContext'
 import { IArtist } from '../../../domain/entities'
+import { Validator, useForm } from '../../hooks/Form/UseForm'
 import { useHandleRequest } from '../../hooks/HandleRequest/UseHandleRequest'
+import { usePlaylist } from '../../hooks/Playlist/UsePlaylist'
 import { useStateDebounce } from '../../hooks/StateDebounce/UseStateDebounce'
-import { IHomeScreenProps } from './HomeScreen.types'
+import {
+  ETracklistSizes,
+  IHomeScreenProps,
+  IPlaylistForm,
+} from './HomeScreen.types'
+
+export const TRACKLIST_SIZES = Object.values(ETracklistSizes).filter(
+  value => typeof value === 'number',
+) as ETracklistSizes[]
 
 export const useHomeScreenRules = ({
   artistSearchService,
   artistTopTracksService,
-  userService,
 }: IHomeScreenProps) => {
-  const {
-    data: artistSearchData,
-    handle: handleArtistSearch,
-    isFailure: isArtistSearchFailure,
-  } = useHandleRequest(artistSearchService.handle, null)
-
-  const { data: artistTopTracks, handle: handleArtistTopTracks } =
-    useHandleRequest(artistTopTracksService.handle, null)
-
-  const { data: user, handle: handleUser } = useHandleRequest(
-    userService.handle,
-    null,
-  )
-
   const [inputValue, setInputValue] = useStateDebounce<string>('')
   const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([])
 
-  const artistOptions: IArtist[] = artistSearchData?.artists.items ?? []
+  const { userDetails } = useUserContext()
 
-  const handleRemoveArtist = useCallback((artist: IArtist) => {
+  const {
+    createTracklist,
+    isTracklistBusy,
+    refreshTracklist,
+    resetTracklist,
+    tracklistData,
+  } = usePlaylist()
+
+  const {
+    data: artistSearchData,
+    handle: handleArtistSearch,
+    isBusy: isArtistSearchBusy,
+  } = useHandleRequest(artistSearchService.handle, null)
+
+  const { reset, setValue, watch } = useForm<IPlaylistForm>({
+    defaultValues: {
+      includeRecommendations: false,
+      tracklistSize: ETracklistSizes.TEN,
+    },
+    validationSchema: {
+      includeRecommendations: Validator.boolean().required(),
+      tracklistSize: Validator.number().oneOf(TRACKLIST_SIZES).required(),
+    },
+  })
+
+  const isBusy = useMemo(() => isArtistSearchBusy, [isArtistSearchBusy])
+
+  const handleOnDeleteArtist = useCallback((id: IArtist['id']) => {
     setSelectedArtists(prev =>
-      prev.filter(selectedArtists => selectedArtists.id !== artist.id),
+      prev.filter(selectedArtists => selectedArtists.id !== id),
     )
   }, [])
 
+  const handleOnInputChange = useCallback(
+    (input: string) => {
+      if (input !== inputValue) {
+        setInputValue(input)
+      }
+    },
+    [inputValue, setInputValue],
+  )
+
   const handleSelectArtist = useCallback(
     (artist: IArtist) => {
+      setInputValue(artist.name)
+
       const ids = selectedArtists.map(artist => artist.id)
 
       if (ids.includes(artist.id)) {
@@ -44,25 +79,46 @@ export const useHomeScreenRules = ({
 
       setSelectedArtists(prev => [...prev, artist])
     },
-    [selectedArtists],
+    [selectedArtists, setInputValue],
   )
 
-  useEffect(() => {
-    handleUser()
-  }, [handleUser])
+  const handleCreateTracklist = useCallback(async () => {
+    createTracklist({
+      artistIds: selectedArtists.map(artist => artist.id),
+      country: userDetails?.country || 'US',
+      size: watch('tracklistSize'),
+      recommendations: watch('includeRecommendations'),
+    })
+  }, [createTracklist, selectedArtists, userDetails?.country, watch])
+
+  const handleOnExportTracklist = useCallback(() => {}, [])
+
+  const handleResetForm = useCallback(() => {
+    reset()
+    setSelectedArtists([])
+  }, [reset])
 
   useEffect(() => {
     if (inputValue) {
       handleArtistSearch({ artistName: inputValue })
     }
-  }, [handleArtistSearch, inputValue])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputValue])
 
   return {
-    artistOptions,
-    handleRemoveArtist,
+    artistSearchData,
+    handleCreateTracklist,
+    handleOnDeleteArtist,
+    handleOnExportTracklist,
+    handleOnInputChange,
+    handleResetForm,
     handleSelectArtist,
+    isBusy,
+    refreshTracklist,
+    resetTracklist,
     selectedArtists,
-    setInputValue,
-    user,
+    setValue,
+    tracklistData,
+    watch,
   }
 }

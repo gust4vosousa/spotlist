@@ -1,8 +1,8 @@
-const getPlainCode = (): string => {
+const getCodeVerifier = (length: number): string => {
   const CHARACTERS =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
-  const values = crypto.getRandomValues(new Uint8Array(64))
+  const values = crypto.getRandomValues(new Uint8Array(length))
 
   return values.reduce(
     (prev, current) => prev + CHARACTERS[current % CHARACTERS.length],
@@ -10,23 +10,21 @@ const getPlainCode = (): string => {
   )
 }
 
-const sha256 = async (value: string): Promise<ArrayBuffer> => {
+const sha256 = async (plainCode: string): Promise<ArrayBuffer> => {
   const encoder = new TextEncoder()
-  const data = encoder.encode(value)
+  const data = encoder.encode(plainCode)
 
   return window.crypto.subtle.digest('SHA-256', data)
 }
 
-const base64encode = (value: ArrayBuffer): string =>
-  btoa(
-    String.fromCharCode(...new Uint8Array(value))
-      .replace(/=/g, '')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_'),
-  )
+const base64encode = (input: ArrayBuffer) =>
+  btoa(String.fromCharCode.apply(null, [...new Uint8Array(input)]))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '')
 
 export const getCodeUtil = async () => {
-  const codeVerifier = getPlainCode()
+  const codeVerifier = getCodeVerifier(64)
   const hashedCode = await sha256(codeVerifier)
   const codeChallenge = base64encode(hashedCode)
 

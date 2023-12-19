@@ -1,0 +1,10 @@
+{
+  "general": {},
+  "screens": {
+    "login": {
+      "log_in": "Por favor, efetue login para continuar",
+      "log_in_spotify": "Login com Spotify",
+      "logging": "Efetuando login..."
+    }
+  }
+}

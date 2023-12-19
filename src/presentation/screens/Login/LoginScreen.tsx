@@ -1,19 +1,42 @@
-import { Box, Button, Typography } from '@mui/material'
+import { Button, Card, Typography } from '@mui/material'
 import React from 'react'
+import { translate } from '../../../application/utils/Translate/TranslateUtils'
 import { ScreenProvider } from '../../components/Providers/Screen/ScreenProvider'
 import { useLoginScreenRules } from './LoginScreen.rules'
 import { ILoginScreenProps } from './LoginScreen.types'
 
 export const LoginScreen: React.FC<ILoginScreenProps> = props => {
-  const { accessToken, getUserAuth } = useLoginScreenRules(props)
+  const { getAuthCode, isAuthAccessTokenBusy } = useLoginScreenRules(props)
 
   return (
     <ScreenProvider>
-      <Box>
-        <Typography variant="h2">{accessToken}</Typography>
-      </Box>
+      <Card
+        style={{
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+          justifyContent: 'center',
+          padding: 16,
+        }}>
+        <Typography>{translate('')}</Typography>
 
-      <Button onClick={() => getUserAuth()}>Log in with Spotify</Button>
+        <Typography fontSize={28}>
+          {isAuthAccessTokenBusy
+            ? translate('screens.login.logging')
+            : translate('screens.login.log_in')}
+        </Typography>
+
+        <Button
+          color="success"
+          disabled={isAuthAccessTokenBusy}
+          onClick={() => getAuthCode()}
+          variant="contained">
+          {isAuthAccessTokenBusy
+            ? translate('screens.login.logging')
+            : translate('screens.login.log_in_spotify')}
+        </Button>
+      </Card>
     </ScreenProvider>
   )
 }

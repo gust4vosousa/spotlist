@@ -1,35 +1,29 @@
 import { AxiosRequestConfig } from 'axios'
-import { Buffer } from 'buffer'
-import { EAuthScopes } from '../../domain/usecases/UserAuth/UserAuth.types'
+import { EAuthScopes } from '../../domain/usecases/Auth'
 
 export class HttpClientConfig {
-  ACCESS_TOKEN = localStorage.getItem('access_token')
-  API_BASE_URL = String(process.env.REACT_APP_SPOTIFY_API_BASE_URL)
-  AUTH_URL = new URL('https://accounts.spotify.com/authorize')
-  CHALLENGE_METHOD = 'S256'
-  CLIENT_ID = String(process.env.REACT_APP_CLIENT_ID)
-  CLIENT_SECRET = String(process.env.REACT_APP_CLIENT_SECRET)
-  GRANT_TYPE = 'client_credentials'
-  RESPONSE_TYPE = 'code'
-  TOKEN_URL = `${process.env.REACT_APP_SPOTIFY_ACCOUNTS_URL}/api/token`
-  AUTH_TOKEN = Buffer.from(
-    `${this.CLIENT_ID}:${this.CLIENT_SECRET}`,
-    'utf-8',
-  ).toString('base64')
+  public readonly ACCOUNTS_URL = String(
+    process.env.REACT_APP_SPOTIFY_ACCOUNTS_URL,
+  )
+  public readonly API_BASE_URL = String(
+    process.env.REACT_APP_SPOTIFY_API_BASE_URL,
+  )
+  public readonly CLIENT_ID = String(process.env.REACT_APP_CLIENT_ID)
 
-  REDIRECT_URI = {
+  public readonly REDIRECT_URI = {
     host: 'https://gust4vosousa.github.io/playlistify/',
     local: 'http://localhost:3000/callback',
   }
 
-  SCOPES: EAuthScopes[] = [
+  public readonly SCOPES = [
     EAuthScopes.userReadPrivate,
     EAuthScopes.userReadEmail,
     EAuthScopes.playlistModifyPrivate,
     EAuthScopes.playlistModifyPublic,
-  ]
+  ].join(' ')
 
-  headers: AxiosRequestConfig['headers'] = {
-    Authorization: `Bearer ${this.ACCESS_TOKEN}`,
-  }
+  public readonly getHeaders = (): AxiosRequestConfig['headers'] => ({
+    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+    'Content-Type': 'application/x-www-form-urlencoded',
+  })
 }

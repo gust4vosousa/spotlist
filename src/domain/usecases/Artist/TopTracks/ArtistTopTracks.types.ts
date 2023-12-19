@@ -1,4 +1,4 @@
-import { ITrack } from '../../../entities'
+import { ITrack, IUserDetails } from '../../../entities'
 
 export interface IArtistTopTracks {
   handle: (
@@ -9,6 +9,7 @@ export interface IArtistTopTracks {
 export namespace ArtistTopTracksNamespace {
   export interface IRequest {
     artistId: string
+    country: IUserDetails['country']
   }
 
   export interface IResponse {

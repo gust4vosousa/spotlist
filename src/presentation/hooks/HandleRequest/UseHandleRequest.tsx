@@ -27,7 +27,6 @@ export const useHandleRequest = <TOutput, TFilter = void>(
 
         return response
       } catch (error) {
-        console.log(error)
         setState(ERequestStatus.error)
 
         return initialState
@@ -41,5 +40,12 @@ export const useHandleRequest = <TOutput, TFilter = void>(
     setState(ERequestStatus.idle)
   }
 
-  return { data, handle, isBusy, isFailure, resetState, state }
+  return {
+    data,
+    handle,
+    isBusy,
+    isFailure,
+    resetState,
+    state,
+  }
 }

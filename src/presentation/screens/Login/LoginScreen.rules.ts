@@ -1,49 +1,44 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { selectAuthData } from '../../../application/store/Auth/AuthSelectors'
-import { setAccessToken } from '../../../application/store/Auth/AuthSlice'
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '../../../application/store/store'
+
+import { useUserContext } from '../../../application/contexts/User/UserContext'
 import { useAuthCode } from '../../hooks/AuthCode/UseAuthCode'
 import { useHandleRequest } from '../../hooks/HandleRequest/UseHandleRequest'
 import { ILoginScreenProps } from './LoginScreen.types'
 
 export const useLoginScreenRules = ({
-  accessTokenService,
-  userAuthService,
+  authAccessTokenService,
+  authCodeService,
 }: ILoginScreenProps) => {
-  const { handle: getUserAuth } = useHandleRequest(userAuthService.handle, null)
+  const { handle: getAuthCode } = useHandleRequest(authCodeService.handle, null)
 
-  const { data: accessToken, handle: getAccessToken } = useHandleRequest(
-    accessTokenService.handle,
-    null,
-  )
+  const {
+    data: authAccessToken,
+    handle: getAuthAccessToken,
+    isBusy: isAuthAccessTokenBusy,
+  } = useHandleRequest(authAccessTokenService.handle, null)
 
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const selectUserAuth = useAppSelector(selectAuthData)
-
-  const { authCode } = useAuthCode()
+  const { authCode, codeVerifier } = useAuthCode()
+  const { setIsUserAuthenticated } = useUserContext()
 
   useEffect(() => {
-    if (authCode) {
-      getAccessToken({ authCode })
+    if (!!authCode && !!codeVerifier) {
+      getAuthAccessToken({ authCode, codeVerifier })
     }
-  }, [authCode])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
-    if (!!accessToken) {
-      dispatch(setAccessToken(accessToken))
+    if (authAccessToken) {
+      setIsUserAuthenticated(true)
       navigate('/home')
     }
-  }, [accessToken])
+  }, [authAccessToken, navigate, setIsUserAuthenticated])
 
   return {
-    accessToken: selectUserAuth?.access_token,
-    authCode,
-    getUserAuth,
+    getAuthCode,
+    isAuthAccessTokenBusy,
   }
 }

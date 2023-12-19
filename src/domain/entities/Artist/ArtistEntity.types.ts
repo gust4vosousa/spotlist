@@ -1,8 +1,15 @@
 import { IImage } from '../Image/ImageEntity.types'
 
 export interface IArtist {
-  id: string
+  external_urls: {
+    spotify: string
+  }
   genres: string[]
-  name: string
+  href: string
+  id: string
   images: IImage[]
+  name: string
+  popularity: number
+  type: string
+  uri: string
 }
