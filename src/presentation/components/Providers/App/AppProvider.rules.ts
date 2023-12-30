@@ -1,16 +1,13 @@
 import { PaletteMode, createTheme } from '@mui/material'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { IColorModeContext } from '../../../../application/contexts/ColorMode/ColorModeContext.types'
-import { IDrawerContext } from '../../../../application/contexts/Drawer/DrawerContext.types'
 import { IUserContext } from '../../../../application/contexts/User/UserContext.types'
 import { makeUserFactory } from '../../../../application/factories/usecases/User/UserFactory'
 import { IUserDetails } from '../../../../domain/entities'
-import { useHandleRequest } from '../../../hooks/HandleRequest/UseHandleRequest'
+import { useHandleRequest } from '../../../hooks/UseHandleRequest/UseHandleRequest'
 
 export const useAppProviderRules = () => {
   const [currentColorMode, setCurrentColorMode] = useState<PaletteMode>('dark')
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
-  const [isNotifyOpen, setIsNotifyOpen] = useState<boolean>(false)
   const [isUserAuthenticated, setIsUserAuthenticated] = useState<boolean>(false)
   const [userDetails, setUserDetails] = useState<IUserDetails | null>(null)
 
@@ -23,14 +20,6 @@ export const useAppProviderRules = () => {
         setCurrentColorMode(prev => (prev === 'dark' ? 'light' : 'dark')),
     }),
     [currentColorMode],
-  )
-
-  const drawerContextValue = useMemo<IDrawerContext>(
-    () => ({
-      isDrawerOpen,
-      toggleDrawerOpen: () => setIsDrawerOpen(!isDrawerOpen),
-    }),
-    [isDrawerOpen],
   )
 
   const handleLogout = useCallback(() => {
@@ -59,6 +48,17 @@ export const useAppProviderRules = () => {
   )
 
   const theme = createTheme({
+    components: {
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            borderRadius: '16px',
+            padding: '16px',
+            width: '100%',
+          },
+        },
+      },
+    },
     palette: {
       primary: {
         main: '#0059d6',
@@ -79,7 +79,6 @@ export const useAppProviderRules = () => {
 
   return {
     colorModeContextValue,
-    drawerContextValue,
     theme,
     userContextValue,
   }

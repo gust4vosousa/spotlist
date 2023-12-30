@@ -12,7 +12,7 @@ export const useHandleRequest = <TOutput, TFilter = void>(
   const [state, setState] = useState<ERequestStatus>(ERequestStatus.idle)
 
   const isBusy = state === ERequestStatus.busy
-  const isFailure = state === ERequestStatus.error
+  const isFailure = state === ERequestStatus.failure
 
   const handle = useCallback(
     async (filter: TFilter) => {
@@ -26,8 +26,8 @@ export const useHandleRequest = <TOutput, TFilter = void>(
         setData(response)
 
         return response
-      } catch (error) {
-        setState(ERequestStatus.error)
+      } catch {
+        setState(ERequestStatus.failure)
 
         return initialState
       }

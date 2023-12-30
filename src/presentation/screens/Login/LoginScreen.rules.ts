@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useUserContext } from '../../../application/contexts/User/UserContext'
-import { useAuthCode } from '../../hooks/AuthCode/UseAuthCode'
-import { useHandleRequest } from '../../hooks/HandleRequest/UseHandleRequest'
+import { useAuthCode } from '../../hooks/UseAuthCode/UseAuthCode'
+import { useHandleRequest } from '../../hooks/UseHandleRequest/UseHandleRequest'
 import { ILoginScreenProps } from './LoginScreen.types'
 
 export const useLoginScreenRules = ({

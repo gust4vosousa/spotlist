@@ -1,10 +1,9 @@
 import i18next from 'i18next'
+import { initReactI18next } from 'react-i18next'
 import enUS from '../../locales/en-US.json'
 import ptBR from '../../locales/pt-BR.json'
 
-const translateInstance = i18next.createInstance()
-
-translateInstance.init({
+i18next.use(initReactI18next).init({
   lng: navigator.language,
   fallbackLng: 'en',
   ns: ['translation'],
@@ -17,5 +16,4 @@ translateInstance.init({
   },
 })
 
-//@ts-ignore
-export const translate = (key: string) => translateInstance.t(key)
+export { i18next as translate }

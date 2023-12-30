@@ -1,5 +1,7 @@
 import { ITrack } from '../../../domain/entities'
 
 export interface ITracklistState {
-  data: ITrack[] | null
+  recommendations: ITrack[]
+  tracklist: ITrack[]
+  topTracks: ITrack[]
 }

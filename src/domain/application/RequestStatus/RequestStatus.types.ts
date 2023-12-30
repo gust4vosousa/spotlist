@@ -1,6 +1,6 @@
 export enum ERequestStatus {
   busy = 'busy',
-  error = 'error',
+  failure = 'failure',
   idle = 'idle',
   success = 'success',
 }

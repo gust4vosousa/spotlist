@@ -1,9 +1,8 @@
 import React, { Fragment, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { Box } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import { useUserContext } from '../../../../application/contexts/User/UserContext'
-import { DrawerComponent } from '../../Navigation/Drawer/DrawerComponent'
 import { FooterComponent } from '../../Navigation/Footer/FooterComponent'
 import { HeaderComponent } from '../../Navigation/Header/HeaderComponent'
 import { IScreenProps } from './ScreenProvider.types'
@@ -23,7 +22,6 @@ export const ScreenProvider: React.FC<IScreenProps> = ({ children }) => {
   return (
     <Fragment>
       <HeaderComponent />
-      <DrawerComponent />
       <Box style={{ padding: 16 }}>{children}</Box>
       <FooterComponent />
     </Fragment>

@@ -48,18 +48,20 @@ export const useForm = <T extends TFieldValues>({
     [],
   )
 
+  const formValues = watch()
+
   return {
     changeRegisterRefName,
     clearErrors,
     control,
     Controller,
     formState,
+    formValues,
     getValues,
     handleSubmit,
     register,
     reset,
     setValue,
     trigger,
-    watch,
   }
 }

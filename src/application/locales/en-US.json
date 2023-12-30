@@ -5,6 +5,13 @@
       "logout": "Log out"
     }
   },
+  "containers": {
+    "form": {
+      "playlist": {
+        "no_artists": "No artists selected"
+      }
+    }
+  },
   "generic": {
     "artists": "Artists",
     "create": "Create",
@@ -15,17 +22,22 @@
     "size": "Size",
     "songs": "Songs"
   },
+  "modals": {
+    "playlist_details": {
+      "title": "Playlist Details"
+    }
+  },
   "screens": {
     "home": {
       "clear_artists": "Clear artists",
       "create_playlist": "Create playlist",
-      "selected_artists": "Selected artists",
-      "labels": {
-        "playlist_size": "Playlist size"
+      "errors": {
+        "size": "A playlist with {{songCount}} songs should have at least {{artistCount}} artists"
       },
       "placeholders": {
         "artists": "What artists do you want to include?"
-      }
+      },
+      "selected_artists": "Selected artists"
     },
     "login": {
       "log_in": "Please, log in to continue",

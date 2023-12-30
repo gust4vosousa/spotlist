@@ -2,20 +2,36 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { ITrack } from '../../../domain/entities'
 import { ITracklistState } from './TracklistSlice.types'
 
-const initialState: ITracklistState = { data: null }
+const initialState: ITracklistState = {
+  recommendations: [],
+  topTracks: [],
+  tracklist: [],
+}
 
-const tracklistSlice = createSlice({
+const { actions, reducer } = createSlice({
   name: 'tracklist',
   initialState,
   reducers: {
     resetTracklist: state => {
-      state.data = null
+      state = initialState
     },
-    setTracklist: (state, action: PayloadAction<ITrack[]>) => {
-      state.data = action.payload
+    setRecommendations: (state, { payload }: PayloadAction<ITrack[]>) => {
+      state.recommendations = payload
+    },
+    setTopTracks: (state, { payload }: PayloadAction<ITrack[]>) => {
+      state.topTracks = payload
+    },
+    setTracklist: (state, { payload }: PayloadAction<ITrack[]>) => {
+      state.tracklist = payload
     },
   },
 })
 
-export const { resetTracklist, setTracklist } = tracklistSlice.actions
-export const tracklistReducer = tracklistSlice.reducer
+export const tracklistReducer = reducer
+
+export const {
+  resetTracklist,
+  setRecommendations,
+  setTopTracks,
+  setTracklist,
+} = actions

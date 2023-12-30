@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 export interface IScreenProps {
-  children: React.ReactNode
+  children: ReactNode
 }
