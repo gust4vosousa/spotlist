@@ -1,16 +1,19 @@
 import React from 'react'
 
 import { Box } from '@mui/material'
+// import { version } from '@root/package.json'
 
-export const FooterComponent: React.FC = () => (
-  <Box
-    style={{
-      display: 'flex',
-      justifyContent: 'center',
-      fontSize: 10,
-      paddingBottom: 16,
-    }}
-  >
-    {`v${process.env.REACT_APP_VERSION} - App Developed by Gustavo Anjos`}
-  </Box>
-)
+export const FooterComponent: React.FC = () => {
+  return (
+    <Box
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        fontSize: 10,
+        paddingBottom: 16
+      }}
+    >
+      {/* {`v${version} - App Developed by Gustavo Anjos`} */}
+    </Box>
+  )
+}

@@ -1,6 +1,6 @@
+import { IUser, UserNamespace } from '@/domain/usecases/User/User.types'
+import { HttpClientConfig } from '@/infra/HttpClient/HttpClientConfig'
 import axios from 'axios'
-import { IUser, UserNamespace } from '../../../domain/usecases/User/User.types'
-import { HttpClientConfig } from '../../../infra/HttpClient/HttpClientConfig'
 
 export class User implements IUser {
   constructor(private readonly httpClient: HttpClientConfig) {}
@@ -10,7 +10,7 @@ export class User implements IUser {
     const url = `${this.httpClient.API_BASE_URL}/v1/me`
 
     const response = await axios.get<UserNamespace.TResponse>(url, {
-      headers,
+      headers
     })
 
     return response.data

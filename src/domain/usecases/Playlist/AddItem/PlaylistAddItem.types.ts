@@ -1,7 +1,5 @@
 export interface IPlaylistAddItem {
-  handle: (
-    request: PlaylistAddItemNamespace.IRequest,
-  ) => Promise<PlaylistAddItemNamespace.IResponse>
+  handle: (request: PlaylistAddItemNamespace.IRequest) => Promise<void>
 }
 
 export namespace PlaylistAddItemNamespace {
@@ -9,6 +7,4 @@ export namespace PlaylistAddItemNamespace {
     playlistId: string
     tracks: string[]
   }
-
-  export interface IResponse {}
 }

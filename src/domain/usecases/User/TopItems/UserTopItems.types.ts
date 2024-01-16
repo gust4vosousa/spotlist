@@ -1,8 +1,8 @@
-import { IArtist } from '../../../entities'
+import { IArtist } from '@/domain/entities'
 
 export interface IUserTopArtists {
   handle: (
-    request: UserTopArtistsNamespace.IRequest,
+    request: UserTopArtistsNamespace.IRequest
   ) => Promise<UserTopArtistsNamespace.IResponse>
 }
 
@@ -26,11 +26,11 @@ export namespace UserTopArtistsNamespace {
 export enum ETopItemLimits {
   TEN = 10,
   TWENTY = 20,
-  FIFTY = 50,
+  FIFTY = 50
 }
 
 export enum ETimeRanges {
   LONG = 'long_term',
   MEDIUM = 'medium_term',
-  SHORT = 'short_term',
+  SHORT = 'short_term'
 }

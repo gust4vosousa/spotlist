@@ -1,8 +1,8 @@
-import { ITrack } from '../../../entities'
+import { ITrack } from '@/domain/entities'
 
 export interface ITrackRecommendations {
   handle: (
-    request: TrackRecommendationsNamespace.IRequest,
+    request: TrackRecommendationsNamespace.IRequest
   ) => Promise<TrackRecommendationsNamespace.IResponse>
 }
 

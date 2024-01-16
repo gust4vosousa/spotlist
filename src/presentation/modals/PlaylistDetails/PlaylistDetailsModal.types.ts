@@ -1,12 +1,12 @@
-import { IBaseModalProps } from '../Base/BaseModal.types'
-
+import { PlaylistCreateNamespace } from '@/domain/usecases/Playlist'
+import { IBaseModalProps } from '@/presentation/modals/Base/BaseModal.types'
 export interface IPlaylistDetailsModalProps
   extends Omit<IBaseModalProps, 'actions'> {
-  onSubmit: (details: IPlaylistDetailsForm) => void
+  isBusy: boolean
+  onSubmit: (details: TPlaylistDetailsForm) => void
 }
 
-export interface IPlaylistDetailsForm {
-  description?: string
-  isPublic: boolean
-  name: string
-}
+export type TPlaylistDetailsForm = Omit<
+  PlaylistCreateNamespace.IRequest,
+  'userId'
+>

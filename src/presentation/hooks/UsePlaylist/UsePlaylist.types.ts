@@ -1,4 +1,4 @@
-import { IArtist } from '../../../domain/entities'
+import { IArtist } from '@/domain/entities'
 
 export interface IPlaylistConfig {
   artists: IArtist[]
@@ -6,19 +6,21 @@ export interface IPlaylistConfig {
   size: ETracklistSizes
 }
 
-export interface IGetTracksParams
-  extends Pick<IPlaylistConfig, 'artists' | 'includeRecommendations'> {
+export interface IGetTracksParams extends IPlaylistConfig {
   limit: number
   offset?: number
 }
 
 export enum ETracklistSizes {
-  SMALL = 10,
-  MEDIUM = 25,
-  LARGE = 50,
+  Ten = 10,
+  TwentyFive = 25,
+  Fifty = 50,
+  SeventyFive = 75,
+  OneHundred = 100,
+  OneHundredFifty = 150,
+  TwoHundred = 200
 }
 
 export enum ELimitRanges {
-  DEFAULT = 10,
-  MAX = 50,
+  MAX = 50
 }

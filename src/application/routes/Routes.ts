@@ -1,16 +1,16 @@
+import { makeHomeScreenFactory } from '@/application/factories/screens/Home/HomeScreenFactory'
+import { makeLoginScreenFactory } from '@/application/factories/screens/Login/LoginScreenFactory'
 import { RouteObject, createHashRouter } from 'react-router-dom'
-import { makeHomeScreenFactory } from '../factories/screens/Home/HomeScreenFactory'
-import { makeLoginScreenFactory } from '../factories/screens/Login/LoginScreenFactory'
 
 const applicationRoutes: RouteObject[] = [
   {
     path: '/',
-    element: makeLoginScreenFactory(),
+    element: makeLoginScreenFactory()
   },
   {
     path: '/home',
-    element: makeHomeScreenFactory(),
-  },
+    element: makeHomeScreenFactory()
+  }
 ]
 
 export const router = createHashRouter(applicationRoutes)

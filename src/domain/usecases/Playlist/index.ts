@@ -1,2 +1,2 @@
-export * from './AddItem/PlaylistAddItem.types'
-export * from './Create/PlaylistCreate.types'
+export * from '@/domain/usecases/Playlist/AddItem/PlaylistAddItem.types'
+export * from '@/domain/usecases/Playlist/Create/PlaylistCreate.types'

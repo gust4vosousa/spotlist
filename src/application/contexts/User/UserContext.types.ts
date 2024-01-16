@@ -1,4 +1,4 @@
-import { IUserDetails } from '../../../domain/entities'
+import { IUserDetails } from '@/domain/entities'
 
 export interface IUserContext {
   handleLogout: () => void

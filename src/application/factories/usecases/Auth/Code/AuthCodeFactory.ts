@@ -1,4 +1,4 @@
-import { AuthCode } from '../../../../../data/usecases/Auth'
-import { makeHttpClientFactory } from '../../../infra/HttpClient/HttpClientFactory'
+import { makeHttpClientFactory } from '@/application/factories/infra/HttpClient/HttpClientFactory'
+import { AuthCode } from '@/data/usecases/Auth'
 
 export const makeAuthCodeFactory = () => new AuthCode(makeHttpClientFactory())

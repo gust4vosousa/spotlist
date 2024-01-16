@@ -1,6 +1,6 @@
-import { getCodeUtil } from '../../../../application/utils/CodeVerifier/CodeVerifierUtil'
-import { IAuthCode } from '../../../../domain/usecases/Auth'
-import { HttpClientConfig } from '../../../../infra/HttpClient/HttpClientConfig'
+import { getCodeUtil } from '@/application/utils/CodeVerifier/CodeVerifierUtil'
+import { IAuthCode } from '@/domain/usecases/Auth'
+import { HttpClientConfig } from '@/infra/HttpClient/HttpClientConfig'
 
 export class AuthCode implements IAuthCode {
   constructor(private readonly httpClient: HttpClientConfig) {}
@@ -15,7 +15,7 @@ export class AuthCode implements IAuthCode {
       code_challenge_method: 'S256',
       redirect_uri: this.httpClient.REDIRECT_URI.local,
       response_type: 'code',
-      scope: this.httpClient.SCOPES,
+      scope: this.httpClient.SCOPES
     }
 
     window.localStorage.setItem('code_verifier', codeVerifier)

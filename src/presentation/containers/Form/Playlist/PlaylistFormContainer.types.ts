@@ -1,4 +1,4 @@
-import { IArtist } from '../../../../domain/entities'
+import { IArtist } from '@/domain/entities'
 
 export interface IPlaylistForm {
   artists: IArtist[]

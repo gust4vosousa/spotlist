@@ -1,5 +1,5 @@
-import { AuthAccessToken } from '../../../../../data/usecases/Auth'
-import { makeHttpClientFactory } from '../../../infra/HttpClient/HttpClientFactory'
+import { makeHttpClientFactory } from '@/application/factories/infra/HttpClient/HttpClientFactory'
+import { AuthAccessToken } from '@/data/usecases/Auth'
 
 export const makeAuthAccessTokenFactory = () =>
   new AuthAccessToken(makeHttpClientFactory())

@@ -1,4 +1,4 @@
-import { IImage } from '../Image/ImageEntity.types'
+import { IImage } from '@/domain/entities'
 
 export interface IArtist {
   external_urls: {

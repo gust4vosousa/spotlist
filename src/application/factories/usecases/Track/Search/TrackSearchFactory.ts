@@ -1,5 +1,5 @@
-import { TrackSearch } from '../../../../../data/usecases/Track/Search/TrackSearch'
-import { makeHttpClientFactory } from '../../../infra/HttpClient/HttpClientFactory'
+import { makeHttpClientFactory } from '@/application/factories/infra/HttpClient/HttpClientFactory'
+import { TrackSearch } from '@/data/usecases/Track/Search/TrackSearch'
 
 export const makeTrackSearchFactory = () =>
   new TrackSearch(makeHttpClientFactory())

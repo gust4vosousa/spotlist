@@ -1,11 +1,13 @@
+import React from 'react'
+
+import { ISelectProps } from '@/presentation/components/Input/Select/SelectComponent.types'
 import {
   FormControl,
   FormHelperText,
   InputLabel,
   MenuItem,
-  Select,
+  Select
 } from '@mui/material'
-import { ISelectProps } from './SelectComponent.types'
 
 export const SelectComponent: React.FC<ISelectProps> = ({
   fullWidth,
@@ -15,7 +17,7 @@ export const SelectComponent: React.FC<ISelectProps> = ({
   label,
   onChange,
   options,
-  value,
+  value
 }) => (
   <FormControl fullWidth={fullWidth} error={isError}>
     <InputLabel>{label}</InputLabel>
@@ -24,7 +26,8 @@ export const SelectComponent: React.FC<ISelectProps> = ({
       onChange={({ target }) => onChange(target.value)}
       label={label}
       style={{ borderRadius: '32px' }}
-      value={value}>
+      value={value}
+    >
       {options.map(option => (
         <MenuItem key={option} value={option}>
           {getOptionLabel ? getOptionLabel(option) : option}

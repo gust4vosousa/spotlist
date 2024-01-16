@@ -1,5 +1,4 @@
-import { IAlbum } from '../Album/AlbumEntity.types'
-import { IArtist } from '../Artist/ArtistEntity.types'
+import { IAlbum, IArtist } from '@/domain/entities'
 
 export interface ITrack {
   album: IAlbum

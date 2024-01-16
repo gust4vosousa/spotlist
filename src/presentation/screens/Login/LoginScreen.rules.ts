@@ -1,21 +1,21 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { useUserContext } from '../../../application/contexts/User/UserContext'
-import { useAuthCode } from '../../hooks/UseAuthCode/UseAuthCode'
-import { useHandleRequest } from '../../hooks/UseHandleRequest/UseHandleRequest'
-import { ILoginScreenProps } from './LoginScreen.types'
+import { useUserContext } from '@/application/contexts/User/UserContext'
+import { useAuthCode } from '@/presentation/hooks/UseAuthCode/UseAuthCode'
+import { useHandleRequest } from '@/presentation/hooks/UseHandleRequest/UseHandleRequest'
+import { ILoginScreenProps } from '@/presentation/screens/Login/LoginScreen.types'
 
 export const useLoginScreenRules = ({
   authAccessTokenService,
-  authCodeService,
+  authCodeService
 }: ILoginScreenProps) => {
   const { handle: getAuthCode } = useHandleRequest(authCodeService.handle, null)
 
   const {
     data: authAccessToken,
     handle: getAuthAccessToken,
-    isBusy: isAuthAccessTokenBusy,
+    isBusy: isAuthAccessTokenBusy
   } = useHandleRequest(authAccessTokenService.handle, null)
 
   const navigate = useNavigate()
@@ -39,6 +39,6 @@ export const useLoginScreenRules = ({
 
   return {
     getAuthCode,
-    isAuthAccessTokenBusy,
+    isAuthAccessTokenBusy
   }
 }

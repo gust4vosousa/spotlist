@@ -1,2 +1,2 @@
-export * from './AccessToken/AuthAccessTokenFactory'
-export * from './Code/AuthCodeFactory'
+export * from '@/application/factories/usecases/Auth/AccessToken/AuthAccessTokenFactory'
+export * from '@/application/factories/usecases/Auth/Code/AuthCodeFactory'

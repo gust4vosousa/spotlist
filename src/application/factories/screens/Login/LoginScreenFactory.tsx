@@ -1,10 +1,12 @@
-import { LoginScreen } from '../../../../presentation/screens/Login/LoginScreen'
+import React from 'react'
+
 import {
   makeAuthAccessTokenFactory,
-  makeAuthCodeFactory,
-} from '../../usecases/Auth'
+  makeAuthCodeFactory
+} from '@/application/factories/usecases/Auth'
+import { LoginScreen } from '@/presentation/screens/Login/LoginScreen'
 
-export const makeLoginScreenFactory = () => (
+export const makeLoginScreenFactory = (): React.ReactElement => (
   <LoginScreen
     authAccessTokenService={makeAuthAccessTokenFactory()}
     authCodeService={makeAuthCodeFactory()}

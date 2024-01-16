@@ -3,13 +3,15 @@ import {
   Controller,
   UseFormRegisterReturn,
   useFieldArray,
-  useForm as useFormLib,
+  useForm as useFormLib
 } from 'react-hook-form'
-
-import { yupResolver } from '@hookform/resolvers/yup'
-import { IUseFormProps, TFieldValues } from './UseForm.types'
-
 import * as Yup from 'yup'
+
+import {
+  IUseFormProps,
+  TFieldValues
+} from '@/presentation/hooks/UseForm/UseForm.types'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 export { Yup as Validator, useFieldArray }
 
@@ -19,8 +21,8 @@ export const useForm = <T extends TFieldValues>({
 }: IUseFormProps<T>) => {
   const resolver = yupResolver(
     Yup.object().shape({
-      ...validationSchema,
-    }),
+      ...validationSchema
+    })
   )
 
   const {
@@ -33,19 +35,19 @@ export const useForm = <T extends TFieldValues>({
     clearErrors,
     control,
     reset,
-    trigger,
+    trigger
   } = useFormLib<T>({
     ...props,
     //@ts-ignore
-    resolver,
+    resolver
   })
 
   const changeRegisterRefName = useCallback(
     (
       { ref, ...rest }: UseFormRegisterReturn,
-      newRefName: string,
+      newRefName: string
     ): Omit<UseFormRegisterReturn, 'ref'> => ({ ...rest, [newRefName]: ref }),
-    [],
+    []
   )
 
   const formValues = watch()
@@ -62,6 +64,6 @@ export const useForm = <T extends TFieldValues>({
     register,
     reset,
     setValue,
-    trigger,
+    trigger
   }
 }

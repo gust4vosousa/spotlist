@@ -1,4 +1,4 @@
-import { ITrack } from '../../../../domain/entities'
+import { ITrack } from '@/domain/entities'
 
 export interface ITracklistProps {
   handleExport: () => void

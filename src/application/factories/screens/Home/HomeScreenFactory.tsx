@@ -1,3 +1,5 @@
-import { HomeScreen } from '../../../../presentation/screens/Home/HomeScreen'
+import React from 'react'
 
-export const makeHomeScreenFactory = () => <HomeScreen />
+import { HomeScreen } from '@/presentation/screens/Home/HomeScreen'
+
+export const makeHomeScreenFactory = (): React.ReactElement => <HomeScreen />

@@ -1,10 +1,11 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import { tracklistReducer } from './Tracklist/TracklistSlice'
-import { TAppDispatch, TRootState } from './store.types'
+
+import { tracklistReducer } from '@/application/store/Tracklist/TracklistSlice'
+import { TAppDispatch, TRootState } from '@/application/store/store.types'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 const reducer = combineReducers({
-  tracklist: tracklistReducer,
+  tracklist: tracklistReducer
 })
 
 export const store = configureStore({ reducer })

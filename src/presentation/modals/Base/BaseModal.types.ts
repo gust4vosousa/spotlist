@@ -1,5 +1,5 @@
+import { IButtonProps } from '@/presentation/components/Input/Button/ButtonComponent.types'
 import { DialogProps } from '@mui/material'
-import { IButtonProps } from '../../components/Input/Button/ButtonComponent.types'
 
 export interface IBaseModalProps
   extends Omit<DialogProps, 'onSubmit' | 'open'> {

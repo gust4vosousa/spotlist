@@ -1,2 +1,2 @@
-export * from './AccessToken/AuthAccessToken.types'
-export * from './Code/AuthCode.types'
+export * from '@/domain/usecases/Auth/AccessToken/AuthAccessToken.types'
+export * from '@/domain/usecases/Auth/Code/AuthCode.types'

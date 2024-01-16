@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { ICheckboxProps } from '@/presentation/components/Input/Checkbox/CheckboxComponent.types'
 import { Checkbox, FormControlLabel } from '@mui/material'
-import { ICheckboxProps } from './CheckboxComponent.types'
 
 export const CheckboxComponent: React.FC<ICheckboxProps> = ({
   isChecked,
   label,
-  onChange,
+  onChange
 }) => (
   <FormControlLabel
     control={

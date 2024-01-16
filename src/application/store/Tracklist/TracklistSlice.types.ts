@@ -1,7 +1,9 @@
-import { ITrack } from '../../../domain/entities'
+import { ITrack } from '@/domain/entities'
 
 export interface ITracklistState {
-  recommendations: ITrack[]
-  tracklist: ITrack[]
-  topTracks: ITrack[]
+  tracklist: {
+    data: ITrack[]
+    error: string
+    url: string
+  }
 }

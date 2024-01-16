@@ -1,19 +1,25 @@
+import { ITracklistState } from '@/application/store/Tracklist/TracklistSlice.types'
+import { TRootState } from '@/application/store/store.types'
 import { createSelector } from '@reduxjs/toolkit'
-import { TRootState } from '../store.types'
-import { ITracklistState } from './TracklistSlice.types'
 
 export const selectTracklistState = ({
-  tracklist,
+  tracklist
 }: TRootState): ITracklistState => tracklist
 
-export const selectRecommendations = (state: TRootState) =>
+export const selectTracklistData = (state: TRootState) =>
   createSelector(
     [selectTracklistState],
-    ({ recommendations }) => recommendations,
+    ({ tracklist }) => tracklist.data
   )(state)
 
-export const selectTopTracks = (state: TRootState) =>
-  createSelector([selectTracklistState], ({ topTracks }) => topTracks)(state)
+export const selectTracklistError = (state: TRootState) =>
+  createSelector(
+    [selectTracklistState],
+    ({ tracklist }) => tracklist.error
+  )(state)
 
-export const selectTracklist = (state: TRootState) =>
-  createSelector([selectTracklistState], ({ tracklist }) => tracklist)(state)
+export const selectTracklistUrl = (state: TRootState) =>
+  createSelector(
+    [selectTracklistState],
+    ({ tracklist }) => tracklist.url
+  )(state)

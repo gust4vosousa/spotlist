@@ -1,7 +1,8 @@
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import enUS from '../../locales/en-US.json'
-import ptBR from '../../locales/pt-BR.json'
+
+import enUS from '@/application/locales/en-US.json'
+import ptBR from '@/application/locales/pt-BR.json'
 
 i18next.use(initReactI18next).init({
   lng: navigator.language,
@@ -12,8 +13,8 @@ i18next.use(initReactI18next).init({
   interpolation: { escapeValue: false },
   resources: {
     'en-US': { translation: enUS },
-    pt: { translation: ptBR },
-  },
+    pt: { translation: ptBR }
+  }
 })
 
 export { i18next as translate }

@@ -1,5 +1,5 @@
+import { EIcons } from '@/presentation/components/Data/Icon/IconComponent.types'
 import { ButtonProps } from '@mui/material'
-import { EIcons } from '../../Data/Icon/IconComponent.types'
 
 export interface IButtonProps
   extends Omit<ButtonProps, 'endIcon' | 'startIcon'> {

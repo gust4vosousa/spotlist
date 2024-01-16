@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { EDebounceDelay } from './UseStateDebounce.types'
+
+import { EDebounceDelay } from '@/presentation/hooks/UseStateDebounce/UseStateDebounce.types'
 
 export const useStateDebounce = <TInitialValue>(
   initialValue: TInitialValue,
-  timeout: EDebounceDelay = EDebounceDelay.default,
+  timeout: EDebounceDelay = EDebounceDelay.default
 ): [typeof initialValue, (value: TInitialValue) => void] => {
   const [value, setValue] = useState<typeof initialValue>(initialValue)
 

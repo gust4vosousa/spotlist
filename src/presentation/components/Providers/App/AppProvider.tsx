@@ -1,14 +1,27 @@
 import React from 'react'
 
-import { CssBaseline, ThemeProvider } from '@mui/material'
-import { ColorModeContext } from '../../../../application/contexts/ColorMode/ColorModeContext'
-import { UserContext } from '../../../../application/contexts/User/UserContext'
-import { useAppProviderRules } from './AppProvider.rules'
-import { IAppProps } from './AppProvider.types'
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
+
+import {
+  ColorModeContext,
+  UserContext,
+  useColorModeContextRules,
+  useUserContextRules
+} from '@/application/contexts'
+import { COMPONENT_STYLES, CUSTOM_PALETTE } from '@/application/theme/theme'
+import { IAppProps } from '@/presentation/components/Providers/App/AppProvider.types'
 
 export const AppProvider: React.FC<IAppProps> = ({ children }) => {
-  const { colorModeContextValue, theme, userContextValue } =
-    useAppProviderRules()
+  const { colorModeContextValue, currentColorMode } = useColorModeContextRules()
+  const { userContextValue } = useUserContextRules()
+
+  const theme = createTheme({
+    components: COMPONENT_STYLES,
+    palette: {
+      ...CUSTOM_PALETTE,
+      mode: currentColorMode
+    }
+  })
 
   return (
     <UserContext.Provider value={userContextValue}>

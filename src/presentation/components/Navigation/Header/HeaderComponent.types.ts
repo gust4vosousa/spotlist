@@ -1,4 +1,4 @@
-import { EIcons } from '../../Data/Icon/IconComponent.types'
+import { EIcons } from '@/presentation/components/Data/Icon/IconComponent.types'
 
 export interface IHeaderAction {
   icon: EIcons

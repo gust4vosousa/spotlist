@@ -1,13 +1,13 @@
 import React from 'react'
 
+import { ButtonComponent } from '@/presentation/components/Input/Button/ButtonComponent'
+import { IBaseModalProps } from '@/presentation/modals/Base/BaseModal.types'
 import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
+  DialogTitle
 } from '@mui/material'
-import { ButtonComponent } from '../../components/Input/Button/ButtonComponent'
-import { IBaseModalProps } from './BaseModal.types'
 
 export const BaseModal: React.FC<IBaseModalProps> = ({
   actions,

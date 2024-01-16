@@ -1,16 +1,17 @@
-import { IPlaylist } from '../../../entities'
+import { IPlaylist, IUserDetails } from '@/domain/entities'
 
 export interface IPlaylistCreate {
   handle: (
-    request: PlaylistCreateNamespace.IRequest,
+    request: PlaylistCreateNamespace.IRequest
   ) => Promise<PlaylistCreateNamespace.TResponse>
 }
 
 export namespace PlaylistCreateNamespace {
   export interface IRequest {
-    description: string
+    description?: string
     name: string
-    public: boolean
+    isPublic: boolean
+    userId: IUserDetails['id']
   }
 
   export type TResponse = IPlaylist

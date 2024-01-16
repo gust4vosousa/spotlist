@@ -1,125 +1,164 @@
-import { useCallback, useState } from 'react'
-import { makeTrackRecommendationsFactory } from '../../../application/factories/usecases/Track/Recommendations/TrackRecommendationsFactory'
-import { makeTrackSearchFactory } from '../../../application/factories/usecases/Track/Search/TrackSearchFactory'
-import { selectTracklist } from '../../../application/store/Tracklist/TracklistSelectors'
+import { useCallback } from 'react'
+
+import { makePlaylistAddItemFactory } from '@/application/factories/usecases/Playlist/AddItem/PlaylistAddItemFactory'
+import { makePlaylistCreateFactory } from '@/application/factories/usecases/Playlist/Create/PlaylistCreateFactory'
+import { makeTrackRecommendationsFactory } from '@/application/factories/usecases/Track/Recommendations/TrackRecommendationsFactory'
+import { makeTrackSearchFactory } from '@/application/factories/usecases/Track/Search/TrackSearchFactory'
 import {
-  setRecommendations,
-  setTopTracks,
-  setTracklist,
-} from '../../../application/store/Tracklist/TracklistSlice'
+  selectTracklistData,
+  selectTracklistError,
+  selectTracklistUrl
+} from '@/application/store/Tracklist/TracklistSelectors'
 import {
-  useAppDispatch,
-  useAppSelector,
-} from '../../../application/store/store'
-import { ITrack } from '../../../domain/entities'
-import { useHandleRequest } from '../UseHandleRequest/UseHandleRequest'
+  clearTracklistState,
+  setTracklistData,
+  setTracklistError,
+  setTracklistUrl
+} from '@/application/store/Tracklist/TracklistSlice'
+import { useAppDispatch, useAppSelector } from '@/application/store/store'
+import { ITrack } from '@/domain/entities'
+import { PlaylistCreateNamespace } from '@/domain/usecases/Playlist'
+import { useHandleRequest } from '@/presentation/hooks/UseHandleRequest/UseHandleRequest'
 import {
   ELimitRanges,
-  ETracklistSizes,
-  IPlaylistConfig,
-} from './UsePlaylist.types'
+  IPlaylistConfig
+} from '@/presentation/hooks/UsePlaylist/UsePlaylist.types'
 
 export const usePlaylist = () => {
   const dispatch = useAppDispatch()
 
-  const tracklist = useAppSelector(selectTracklist)
-
-  const [playlistSize, setPlaylistSize] = useState<ETracklistSizes>(
-    ETracklistSizes.SMALL,
-  )
-
-  const {
-    handle: getTrackRecommendations,
-    isBusy: isTrackRecommendationsBusy,
-  } = useHandleRequest(makeTrackRecommendationsFactory().handle, null)
+  const tracklistData = useAppSelector(selectTracklistData)
+  const tracklistError = useAppSelector(selectTracklistError)
+  const tracklistUrl = useAppSelector(selectTracklistUrl)
 
   const { handle: getArtistTracks, isBusy: isArtistTracksBusy } =
     useHandleRequest(makeTrackSearchFactory().handle, null)
 
-  const isTracklistBusy = isArtistTracksBusy || isTrackRecommendationsBusy
+  const {
+    handle: getTrackRecommendations,
+    isBusy: isTrackRecommendationsBusy
+  } = useHandleRequest(makeTrackRecommendationsFactory().handle, null)
 
-  const getTracks = useCallback(
-    async ({
-      artists,
-      includeRecommendations,
-    }: Pick<IPlaylistConfig, 'artists' | 'includeRecommendations'>) => {
+  const { handle: postPlaylistCreate, isBusy: isPlaylistCreateBusy } =
+    useHandleRequest(makePlaylistCreateFactory().handle, null)
+
+  const { handle: postPlaylistItems, isBusy: isPlaylistItemsBusy } =
+    useHandleRequest(makePlaylistAddItemFactory().handle, null)
+
+  const isTracklistBusy = isArtistTracksBusy || isTrackRecommendationsBusy
+  const isExportBusy = isPlaylistCreateBusy || isPlaylistItemsBusy
+
+  const handleGetArtistTracks = useCallback(
+    async ({ artists, size }: IPlaylistConfig) => {
       const tracks: ITrack[] = []
 
-      const limit = includeRecommendations
-        ? ELimitRanges.DEFAULT
-        : Math.ceil(playlistSize / artists.length)
-
       const promises = artists.map(async artist => {
-        const response = await getArtistTracks({
-          limit,
-          query: artist.name,
-        })
+        let limit = Math.ceil(size / artists.length)
+        let offset = 0
 
-        if (response?.tracks.items) {
-          const items = response.tracks.items.filter(item =>
-            item.artists.filter(itemArtist => itemArtist.id === artist.id),
-          )
+        while (limit > 0) {
+          const response = await getArtistTracks({
+            limit: limit > ELimitRanges.MAX ? ELimitRanges.MAX : limit,
+            offset,
+            query: artist.name
+          })
 
-          tracks.push(...items)
+          tracks.push(...(response?.tracks.items || []))
+
+          limit -= ELimitRanges.MAX
+          offset += ELimitRanges.MAX
         }
       })
 
       await Promise.all(promises)
 
-      if (includeRecommendations) {
-        const response = await getTrackRecommendations({
-          artistIds: artists.map(artist => artist.id),
-          limit: 10,
-        })
-
-        tracks.push(...(response?.tracks || []))
-      }
-
       return tracks
     },
-    [getArtistTracks, getTrackRecommendations, playlistSize],
+    [getArtistTracks]
   )
 
-  const shuffleTracks = useCallback(
-    (tracks: ITrack[]) => {
-      const shuffled = tracks
-        .map(track => ({ track, sortValue: Math.random() }))
-        .sort((a, b) => a.sortValue - b.sortValue)
-        .map(({ track }) => track)
+  const handleGetTrackRecommendations = useCallback(
+    async ({ artists, includeRecommendations, size }: IPlaylistConfig) => {
+      if (!includeRecommendations) {
+        return []
+      }
 
-      dispatch(setTracklist(shuffled.slice(0, playlistSize)))
+      const response = await getTrackRecommendations({
+        artistIds: artists.map(artist => artist.id),
+        limit: size
+      })
+
+      return response?.tracks || []
     },
-    [dispatch, playlistSize],
+    [getTrackRecommendations]
   )
 
-  const exportTracklist = () => {}
+  const exportTracklist = useCallback(
+    async (params: PlaylistCreateNamespace.IRequest) => {
+      const playlistDetails = await postPlaylistCreate(params)
+
+      if (playlistDetails) {
+        await postPlaylistItems({
+          playlistId: playlistDetails.id,
+          tracks: tracklistData.map(track => track.uri)
+        })
+
+        dispatch(setTracklistUrl(playlistDetails.external_urls.spotify))
+      }
+    },
+    [dispatch, postPlaylistCreate, postPlaylistItems, tracklistData]
+  )
+
+  const shuffleTracks = useCallback((tracks: ITrack[], size: number) => {
+    return tracks
+      .map(track => ({ track, sortValue: Math.random() }))
+      .sort((a, b) => a.sortValue - b.sortValue)
+      .map(({ track }) => track)
+      .slice(0, size)
+  }, [])
 
   const resetTracklist = useCallback(() => {
-    setRecommendations([])
-    setTopTracks([])
-    dispatch(setTracklist([]))
+    dispatch(clearTracklistState())
   }, [dispatch])
 
   const createTracklist = useCallback(
-    async ({ artists, includeRecommendations, size }: IPlaylistConfig) => {
+    async (config: IPlaylistConfig) => {
       resetTracklist()
-      setPlaylistSize(size)
 
-      const tracks = await getTracks({
-        artists,
-        includeRecommendations,
-      })
+      const artistTracks = await handleGetArtistTracks(config)
+      const trackRecomendations = await handleGetTrackRecommendations(config)
+      const shuffledTracks = shuffleTracks(
+        [...artistTracks, ...trackRecomendations],
+        config.size
+      )
 
-      shuffleTracks(tracks)
+      dispatch(setTracklistData(shuffledTracks))
+
+      if (shuffledTracks.length < config.size) {
+        dispatch(
+          setTracklistError(
+            `The selected artists have only ${shuffledTracks.length} songs available, so we could not fill the playlist :(`
+          )
+        )
+      }
     },
-    [getTracks, resetTracklist, shuffleTracks],
+    [
+      dispatch,
+      handleGetArtistTracks,
+      handleGetTrackRecommendations,
+      resetTracklist,
+      shuffleTracks
+    ]
   )
 
   return {
     createTracklist,
     exportTracklist,
+    isExportBusy,
     isTracklistBusy,
     resetTracklist,
-    tracklist,
+    tracklistData,
+    tracklistError,
+    tracklistUrl
   }
 }

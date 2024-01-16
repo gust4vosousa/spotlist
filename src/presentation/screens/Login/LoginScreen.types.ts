@@ -1,4 +1,4 @@
-import { AuthAccessToken, AuthCode } from '../../../data/usecases/Auth'
+import { AuthAccessToken, AuthCode } from '@/data/usecases/Auth'
 
 export interface ILoginScreenProps {
   authAccessTokenService: AuthAccessToken

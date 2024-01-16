@@ -1,8 +1,8 @@
-import { IArtist } from '../../../entities/Artist/ArtistEntity.types'
+import { IArtist } from '@/domain/entities/Artist/ArtistEntity.types'
 
 export interface IArtistSearch {
   handle: (
-    request: ArtistSearchNamespace.IRequest,
+    request: ArtistSearchNamespace.IRequest
   ) => Promise<ArtistSearchNamespace.IResponse>
 }
 

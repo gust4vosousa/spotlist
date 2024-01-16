@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { translate } from '@/application/utils/Translate/TranslateUtil'
+import { ButtonComponent } from '@/presentation/components/Input/Button/ButtonComponent'
+import { ScreenProvider } from '@/presentation/components/Providers/Screen/ScreenProvider'
+import { useLoginScreenRules } from '@/presentation/screens/Login/LoginScreen.rules'
+import { ILoginScreenProps } from '@/presentation/screens/Login/LoginScreen.types'
 import { Card, Typography } from '@mui/material'
-import { translate } from '../../../application/utils/Translate/TranslateUtil'
-import { ButtonComponent } from '../../components/Input/Button/ButtonComponent'
-import { ScreenProvider } from '../../components/Providers/Screen/ScreenProvider'
-import { useLoginScreenRules } from './LoginScreen.rules'
-import { ILoginScreenProps } from './LoginScreen.types'
 
 export const LoginScreen: React.FC<ILoginScreenProps> = props => {
   const { getAuthCode, isAuthAccessTokenBusy } = useLoginScreenRules(props)
@@ -19,8 +19,9 @@ export const LoginScreen: React.FC<ILoginScreenProps> = props => {
           flexDirection: 'column',
           gap: 16,
           justifyContent: 'center',
-          padding: 16,
-        }}>
+          padding: 16
+        }}
+      >
         <Typography fontSize={28}>
           {isAuthAccessTokenBusy
             ? translate.t('screens.login.logging')
@@ -28,10 +29,11 @@ export const LoginScreen: React.FC<ILoginScreenProps> = props => {
         </Typography>
 
         <ButtonComponent
-          color="success"
+          color='secondary'
           disabled={isAuthAccessTokenBusy}
           onClick={() => getAuthCode()}
-          variant="contained">
+          variant='contained'
+        >
           {isAuthAccessTokenBusy
             ? translate.t('screens.login.logging')
             : translate.t('screens.login.log_in_spotify')}

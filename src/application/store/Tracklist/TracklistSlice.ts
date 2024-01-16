@@ -1,37 +1,39 @@
+import { ITracklistState } from '@/application/store/Tracklist/TracklistSlice.types'
+import { ITrack } from '@/domain/entities'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { ITrack } from '../../../domain/entities'
-import { ITracklistState } from './TracklistSlice.types'
 
 const initialState: ITracklistState = {
-  recommendations: [],
-  topTracks: [],
-  tracklist: [],
+  tracklist: {
+    data: [],
+    error: '',
+    url: ''
+  }
 }
 
 const { actions, reducer } = createSlice({
   name: 'tracklist',
   initialState,
   reducers: {
-    resetTracklist: state => {
-      state = initialState
+    clearTracklistState: state => {
+      state.tracklist = initialState.tracklist
     },
-    setRecommendations: (state, { payload }: PayloadAction<ITrack[]>) => {
-      state.recommendations = payload
+    setTracklistData: (state, { payload }: PayloadAction<ITrack[]>) => {
+      state.tracklist.data = payload
     },
-    setTopTracks: (state, { payload }: PayloadAction<ITrack[]>) => {
-      state.topTracks = payload
+    setTracklistError: (state, { payload }: PayloadAction<string>) => {
+      state.tracklist.error = payload
     },
-    setTracklist: (state, { payload }: PayloadAction<ITrack[]>) => {
-      state.tracklist = payload
-    },
-  },
+    setTracklistUrl: (state, { payload }: PayloadAction<string>) => {
+      state.tracklist.url = payload
+    }
+  }
 })
 
 export const tracklistReducer = reducer
 
 export const {
-  resetTracklist,
-  setRecommendations,
-  setTopTracks,
-  setTracklist,
+  clearTracklistState,
+  setTracklistData,
+  setTracklistError,
+  setTracklistUrl
 } = actions

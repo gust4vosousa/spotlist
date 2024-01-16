@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { IconComponent } from '@/presentation/components/Data/Icon/IconComponent'
+import { IButtonProps } from '@/presentation/components/Input/Button/ButtonComponent.types'
 import { Button, CircularProgress } from '@mui/material'
-import { IconComponent } from '../../Data/Icon/IconComponent'
-import { IButtonProps } from './ButtonComponent.types'
 
 export const ButtonComponent: React.FC<IButtonProps> = ({
   children,
@@ -17,7 +17,7 @@ export const ButtonComponent: React.FC<IButtonProps> = ({
       icon && (
         <>
           {inProgress ? (
-            <CircularProgress color="inherit" size={16} />
+            <CircularProgress color='inherit' size={16} />
           ) : (
             <IconComponent icon={icon} />
           )}
@@ -25,7 +25,8 @@ export const ButtonComponent: React.FC<IButtonProps> = ({
       )
     }
     variant={variant}
-    style={{ borderRadius: '32px', padding: '8px 16px !important' }}>
+    style={{ borderRadius: '32px', padding: '8px 16px !important' }}
+  >
     {children}
   </Button>
 )

@@ -1,8 +1,8 @@
-import { ITrack, IUserDetails } from '../../../entities'
+import { ITrack, IUserDetails } from '@/domain/entities'
 
 export interface IArtistTopTracks {
   handle: (
-    request: ArtistTopTracksNamespace.IRequest,
+    request: ArtistTopTracksNamespace.IRequest
   ) => Promise<ArtistTopTracksNamespace.IResponse>
 }
 

@@ -1,5 +1,14 @@
 import React from 'react'
 
+import { translate } from '@/application/utils/Translate/TranslateUtil'
+import { IconComponent } from '@/presentation/components/Data/Icon/IconComponent'
+import { EIcons } from '@/presentation/components/Data/Icon/IconComponent.types'
+import { ButtonComponent } from '@/presentation/components/Input/Button/ButtonComponent'
+import { CheckboxComponent } from '@/presentation/components/Input/Checkbox/CheckboxComponent'
+import { SelectComponent } from '@/presentation/components/Input/Select/SelectComponent'
+import { usePlaylistFormContainerRules } from '@/presentation/containers/Form/Playlist/PlaylistFormContainer.rules'
+import { usePlaylist } from '@/presentation/hooks/UsePlaylist/UsePlaylist'
+import { ETracklistSizes } from '@/presentation/hooks/UsePlaylist/UsePlaylist.types'
 import {
   Autocomplete,
   Avatar,
@@ -11,17 +20,8 @@ import {
   ListItemAvatar,
   ListItemText,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material'
-import { translate } from '../../../../application/utils/Translate/TranslateUtil'
-import { IconComponent } from '../../../components/Data/Icon/IconComponent'
-import { EIcons } from '../../../components/Data/Icon/IconComponent.types'
-import { ButtonComponent } from '../../../components/Input/Button/ButtonComponent'
-import { CheckboxComponent } from '../../../components/Input/Checkbox/CheckboxComponent'
-import { SelectComponent } from '../../../components/Input/Select/SelectComponent'
-import { usePlaylist } from '../../../hooks/UsePlaylist/UsePlaylist'
-import { ETracklistSizes } from '../../../hooks/UsePlaylist/UsePlaylist.types'
-import { usePlaylistFormContainerRules } from './PlaylistFormContainer.rules'
 
 export const PlaylistFormContainer: React.FC = () => {
   const { createTracklist, isTracklistBusy } = usePlaylist()
@@ -33,8 +33,11 @@ export const PlaylistFormContainer: React.FC = () => {
     handleSelectArtist,
     isArtistSearchBusy,
     reset,
-    setValue,
+    setValue
   } = usePlaylistFormContainerRules()
+
+  const isButtonDisabled =
+    formValues.artists.length <= 0 || isArtistSearchBusy || isTracklistBusy
 
   return (
     <Grid container spacing={2}>
@@ -53,8 +56,8 @@ export const PlaylistFormContainer: React.FC = () => {
                 ...params.InputProps,
                 startAdornment: <IconComponent icon={EIcons.SEARCH} />,
                 style: {
-                  borderRadius: '32px',
-                },
+                  borderRadius: '32px'
+                }
               }}
               label={translate.t('generic.artists')}
               onChange={({ target }) => handleOnInputChange(target.value)}
@@ -64,7 +67,7 @@ export const PlaylistFormContainer: React.FC = () => {
           renderOption={(props, { id, images, name }) => (
             <ListItem {...props} key={id}>
               <ListItemAvatar>
-                <Avatar alt="Artist avatar" src={images[0]?.url} />
+                <Avatar alt='Artist avatar' src={images[0]?.url} />
               </ListItemAvatar>
               <ListItemText primary={name} />
             </ListItem>
@@ -84,7 +87,12 @@ export const PlaylistFormContainer: React.FC = () => {
         />
       </Grid>
 
-      <Grid item xs={8} md={3}>
+      <Grid
+        item
+        xs={8}
+        md={3}
+        style={{ alignItems: 'center', display: 'flex' }}
+      >
         <CheckboxComponent
           isChecked={formValues.includeRecommendations}
           onChange={value => setValue('includeRecommendations', value)}
@@ -92,43 +100,46 @@ export const PlaylistFormContainer: React.FC = () => {
         />
       </Grid>
 
-      <Grid item display="flex" gap="8px" xs={12}>
+      <Grid item display='flex' gap='8px' xs={12}>
         <ButtonComponent
-          color="error"
-          disabled={formValues.artists.length <= 0 || isArtistSearchBusy}
+          color='error'
+          disabled={isButtonDisabled}
           icon={EIcons.DELETE}
           onClick={() => reset()}
-          variant="contained">
+          variant='contained'
+        >
           {translate.t('generic.reset')}
         </ButtonComponent>
         <ButtonComponent
-          disabled={formValues.artists.length <= 0 || isArtistSearchBusy}
+          disabled={isButtonDisabled}
           icon={EIcons.QUEUE_MUSIC}
           inProgress={isTracklistBusy}
           onClick={() => createTracklist(formValues)}
-          variant="contained">
+          variant='contained'
+        >
           {translate.t('generic.create')}
         </ButtonComponent>
       </Grid>
 
       <Grid item xs={12}>
         <Card
-          elevation={3}
-          style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          elevation={4}
+          style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
+        >
           <Typography fontSize={18} fontWeight={600}>
             {translate.t('screens.home.selected_artists')}
           </Typography>
           {formValues.artists.length > 0 ? (
-            <Box flexWrap="wrap" flexDirection="row">
+            <Box display='flex' flexWrap='wrap' flexDirection='row' gap={1}>
               {formValues.artists.map(({ id, images, name }) => (
                 <Chip
-                  avatar={<Avatar alt="Artist avatar" src={images[0]?.url} />}
+                  avatar={<Avatar alt='Artist avatar' src={images[0]?.url} />}
                   key={id}
                   label={name}
                   onDelete={() =>
                     setValue(
                       'artists',
-                      formValues.artists.filter(artist => artist.id !== id),
+                      formValues.artists.filter(artist => artist.id !== id)
                     )
                   }
                 />
